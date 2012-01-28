@@ -19,7 +19,7 @@ def downloadDeps() {
     }
     println "Download dependencies:"
     
-    def baseURL = 'http://uabeea-geobi-dev.int.lsn.camptocamp.com/dependencies/'
+    def baseURL = 'http://download.qualitystreetmap.org/osm/osmbi/libs/'
     def dependencies = ['commons-beanutils.jar', 'commons-math.jar', 'eigenbase-xom.jar',  'jts-1.10.jar', 'postgresql-8.4-701.jdbc3.jar', 
                         'commons-collections-3.2.1.jar', 'commons-pool.jar', 'ezmorph-1.0.4.jar', 'log4j.jar', 'servlet-api.jar', 'commons-dbcp.jar', 
                         'commons-vfs.jar', 'geomondrian.jar', 'mapfish-geo-lib-1.2-SNAPSHOT.jar', 'spatialytics.jar', 'commons-lang-2.4.jar', 'json-20080701.jar', 
@@ -98,6 +98,44 @@ def combinedGeoExt = new File(combinedOut,"geoext-combined.js")
 def minifiedApp = new File(minifiedJsOut, 'app-all.js')
 def combinedApp = new File(combinedOut,"app-combined.js")
 
+task (svnExportExternals) << {
+  if (! new File("webapp/src/main/webapp/lib/externals/ext").exists()) {
+    exec {
+      executable = 'svn'
+        args = ['export',
+             'http://svn.geoext.org/ext/3.2.1@2626',
+             'webapp/src/main/webapp/lib/externals/ext']
+    }
+  }
+
+  if (! new File("webapp/src/main/webapp/lib/externals/geoext").exists()) {
+    exec {
+      executable = 'svn'
+        args = ['export',
+             'http://svn.geoext.org/core/trunk/geoext@2428',
+             'webapp/src/main/webapp/lib/externals/geoext']
+    }
+  }
+
+
+  if (! new File("webapp/src/main/webapp/lib/externals/loadingpanel").exists()) {
+    exec {
+      executable = 'svn'
+        args = ['export',
+             'http://svn.openlayers.org/addins/loadingPanel/trunk@10808',
+             'webapp/src/main/webapp/lib/externals/loadingpanel']
+    }
+  }
+
+  if (! new File("webapp/src/main/webapp/lib/externals/openlayers").exists()) {
+    exec {
+      executable = 'svn'
+        args = ['export',
+             'http://svn.openlayers.org/trunk/openlayers@10808',
+             'webapp/src/main/webapp/lib/externals/openlayers']
+    }
+  }
+}
 
 task (copyJsResources, type:Sync) {
   from new File(webAppDir,'lib/externals/openlayers')
@@ -107,6 +145,7 @@ task (copyJsResources, type:Sync) {
   include 'theme/**'
 }
 
+copyJsResources.dependsOn svnExportExternals
 
 def lookupJsFiles(file, encoding) {
   String text = file.getText(encoding)
