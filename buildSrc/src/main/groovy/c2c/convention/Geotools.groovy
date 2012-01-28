@@ -8,6 +8,7 @@ class Geotools {
     List<String> modules = ["epsg-hsql", "shapefile", "render", "geojson","brewer"]
     List<String> otherDeps = []
     Map<String,String> repositories = ["ibiblio":"http://www.ibiblio.org/maven2", 
+                        "maven":"http://repo1.maven.org/maven2/",
                         "osgeo":"http://download.osgeo.org/webdav/geotools",
                         "opengeo":"http://repo.opengeo.org/"]
     Map<String,String> excludes = [:]
