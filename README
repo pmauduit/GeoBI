@@ -10,7 +10,41 @@ The client interface offers a MDX query builder and a result visualization of th
 Installation
 =============
 
-See Wiki page of github project: https://github.com/camptocamp/GeoBI/wiki
+1. Ensure your datawarehouse is loaded
+
+For example, with geofoodmart:
+
+* grab http://trac.spatialytics.com/geomondrian/export/6/trunk/demo/geofoodmart_sql_postgres.zip
+* Load the dump into a postgresql db with postgis enabled, named "geodw"
+* grab http://trac.spatialytics.com/geomondrian/export/6/trunk/demo/GeoFoodMart.xml
+* Save it into webapp/src/main/webapp/WEB-INF/classes/geofoodmart.xml
+
+2. Compile
+
+$ ./gradlew war -Pserver=geofoodmart
+
+3. Deploy
+
+Expected war should be in webapp/build/lib/webbi.war
+
+
+For people who already have a cube
+=====================================
+
+If you want to run the webapp with your own data, you will have to create a configuration profile:
+
+1. create a subdirectory into webapp/filters/ with the name (lowercased) of your profile (you can copy local/)
+
+2. edit webapp/filters/<yourprofile>/resource.filter and adjust the parameters
+
+3. Make sure the cube definition as XML is in webapp/src/main/webapp/WEB-INF/classes/yourcube.xml
+
+4. You may have to tweak the webapp/src/main/webapp/app/lib/App/map.js in order
+to add your OpenLayers' specific base layer (with specific EPSG for example)
+
+5. launch $./gradlew war -Pserver=<yourprofile>
+The resulting war would normally be in webapp/build/lib/webbi.war
+
 
 Contact & contribution
 =======================

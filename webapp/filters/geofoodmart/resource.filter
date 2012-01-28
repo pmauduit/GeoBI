@@ -1,0 +1,8 @@
+# This file contains key-value pairs that will be used to resolve @key@ strings in the filtered resources
+
+servername=localhost
+db-server=localhost
+db-name=geodw
+cube-definition=geofoodmart.xml
+simple-cube-definition=geofoodmart.xml
+cube-name=Sales

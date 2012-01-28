@@ -291,23 +291,14 @@ App.map = function() {
         region: 'center',
         border: false,
         map: {
-            maxExtent: new OpenLayers.Bounds(943657.8520000001,941523.6410000001,7601956.61,6824985.259000001),
-            units: 'm',
             maxResolution: 'auto',
             controls: [new OpenLayers.Control.Navigation()]
         },
         layers: [
             new OpenLayers.Layer.WMS(
-                'countries',
-                './getbaselayer',
-                {
-                    format: 'image/png'
-                },
-                {
-                    isBaseLayer: true,
-                    singleTile: true
-                }
-            )
+              "OpenLayers WMS",
+              "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: 'basic'}
+              )
         ]
     });
 
