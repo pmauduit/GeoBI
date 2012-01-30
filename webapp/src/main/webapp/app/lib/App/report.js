@@ -18,7 +18,7 @@ App.report = function() {
             printButton.setIconClass('loading');
             var hostPort = "http://" + window.location.hostname +
                            (window.location.port === "" ? "" : ':' + window.location.port);
-            var legendUrl = hostPort + window.location.pathname + '/getlegend'+
+            var legendUrl = hostPort + window.location.pathname + 'getlegend'+
                 '?QUERYID='+App.queryId+
                 '&STYLEID='+App.styleId+
                 '&FORMAT_OPTIONS=dpi:254';
