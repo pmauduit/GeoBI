@@ -1,18 +1,40 @@
 Introduction
 ============
 
-GeoBI is a GeoBI web application to offer to the user an ergonomic tool for data analysis (SOLAP type). It offers server and client side feature. Application's server side is written in Java, client side in JavaScript.
+This is a fork of Camptocamp's GeoBI webapp, which aims to solve some issues
+with the provided build system (based on Gradle).
 
-The spatial cube part of the application is based on GeoMondrian. A Java GeoBI server based on GeoTools, JfreeChart and OLAP4J provides WMS-type Web services for the maps and an API allowing a client/server interaction, using JSON as exchange format.
-
-The client interface offers a MDX query builder and a result visualization of three synchronized types : map, table and graphics.
+I put some fixes with the default maven repositories, and added a geofoodmart
+profile, in order to easily test or deploy the webapp using the well-known
+geofoodmart sample.
 
 Installation
 =============
 
-See Wiki page of github project: https://github.com/camptocamp/GeoBI/wiki
+If you want to try the app using geofoodmart datas:
 
-Contact & contribution
-=======================
+$ wget http://trac.spatialytics.com/geomondrian/export/6/trunk/demo/geofoodmart_sql_postgres.zip
 
-Contribution are welcome! Don't hesitate to contact us for more information or tell us how you are using this project.
+$ unzip geofoodmart_sql_postgres.zip
+
+$ createdb geodw
+
+$ createlang plpgsql geodw
+
+$ psql -f /usr/share/postgresql/<path/to>/postgis/postgis.sql geodw
+
+$ psql -f /<same path as previously>/spatial_ref_sys.sql geodw
+
+$ psql geodw < geofoodmart.sql
+
+$ wget -O webapp/src/main/webapp/WEB-INF/classes/geofoodmart.xml http://trac.spatialytics.com/geomondrian/export/6/trunk/demo/GeoFoodMart.xml
+
+$ ./gradlew jettyRun -Pserver=geofoodmart
+
+That should do the trick.
+
+Have fun,
+
+- Pierre
+
+
