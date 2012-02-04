@@ -1,6 +1,6 @@
 import c2c.plugin.*
 
-setProperty("server", server ?: "local")
+if (! hasProperty("server")) setProperty("server", "local")
 
 apply plugin: 'java'
 apply plugin: 'war'
@@ -59,7 +59,7 @@ jettyRun {
     scanIntervalSeconds = 5
 
     contextPath = contextName
-    dependsOn 'jsMinify'
+    dependsOn 'jsMinify', 'filterJetty'
 }
 
 war {

@@ -8,6 +8,7 @@ import c2c.task.*
 class Camptocamp implements Plugin<Project> {  
     final String FILTER_RESOURCES_TASKNAME = "filterResources"
     final String FILTER_WEBAPP_TASKNAME = "filterWebapp"
+    final String FILTER_JETTY_TASKNAME = "filterJetty"
 
     public void apply(Project project) {
         def env = System.getenv()
@@ -20,6 +21,8 @@ class Camptocamp implements Plugin<Project> {
         project.convention.plugins.camptocamp = convention
 
         configureFiltering(project, FILTER_RESOURCES_TASKNAME, convention.filterResourcesIn, convention.filterResourcesOut)
+        // Need to configure filtered webapps for jettyRun target
+        configureFiltering(project, FILTER_JETTY_TASKNAME, convention.filterWebappIn, convention.filterJettyWebappOut)
         configureFiltering(project, FILTER_WEBAPP_TASKNAME, convention.filterWebappIn, convention.filterWebappOut)
 
         addDefaultTasks(project)
@@ -63,8 +66,10 @@ class Camptocamp implements Plugin<Project> {
 
         filtering.from input
         filtering.into output
-
-        project.ant.delete(dir: output)
+        // don't delete in case of jetty target
+        // (else it will delete several sources in webapp/)
+        if (! name.equals(FILTER_JETTY_TASKNAME))
+          project.ant.delete(dir: output)
 
         if(System.getProperty("server") == null) {
             project.logger.info("system property 'server' is not defined so defaulting to 'local'")
