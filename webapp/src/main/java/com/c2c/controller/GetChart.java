@@ -197,12 +197,28 @@ public class GetChart  extends AbstractQueryingController {
     	public String[] getTranslatedIndicators(DataQueryFeatureSource dqfs)
     	{
     		HashMap<String, String> lkp = Util.lookupIndicators(dqfs);
-    		String[] ret = getColumnKeys();
-    		for (int i = 0 ; i < ret.length ;  i++)
+    		String[] colKeys = getColumnKeys();
+    		ArrayList<String> ret = new ArrayList<String>();
+    		for (int i = 0 ; i < colKeys.length ;  i++)
     		{
-    			ret[i] = lkp.get(ret[i]) == null ? ret[i] : lkp.get(ret[i]);
+    			// if column is already in the array (ex. "Q1"), add
+    			// a #number at the end (columns cannot have the same name
+    			// in JFreeCharts API
+    			String newColumn = lkp.get(colKeys[i]) == null ? colKeys[i] : lkp.get(colKeys[i]);
+    			if (! ret.contains(newColumn)) {
+    				ret.add(newColumn);
+    			}else {
+    				int j = 1;
+    				String nCol = newColumn;
+    				
+    				while (ret.contains(nCol)) {
+    					nCol = String.format("%s #%d", newColumn, j);
+    					j++;
+    				}
+					ret.add(nCol);
+    			}
     		}	
-    		return ret;
+    		return ret.toArray(colKeys);
     	}
 
     }
