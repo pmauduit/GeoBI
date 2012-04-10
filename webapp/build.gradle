@@ -167,6 +167,17 @@ def lookupJsFiles(file, encoding) {
   return files
 }
 
+def lookupJsFilesOL211(file, encoding) {
+  String text = file.getText(encoding)
+  def pattern = ~/jsFiles = \[((\s*"[^"),]*?",?\s*)+)\]/
+  def matcher = pattern.matcher(text)
+  matcher.find()
+  def filesNames = matcher.group(1).trim().split(",").collect{it.trim()}.collect{f -> f.substring(1,f.length() - 1)}
+  def files = [file]
+  files.addAll(filesNames.collect{new File(file.parentFile, it)})
+  return files
+}
+
 def write(writer, file ,encoding) {
   logger.debug("Writing "+file)
   writer.write("\n/* ***** Start of ${file.name} **** */\n")
