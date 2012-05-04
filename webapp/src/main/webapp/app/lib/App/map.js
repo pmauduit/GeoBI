@@ -206,7 +206,7 @@ App.map = function() {
      * Optionaly adds the drill down control
      */
     var addDrillDownControl = function() {
-        if (navigables[currentNavigable][0]) {
+        if (navigables[currentNavigable] && navigables[currentNavigable][0]) {
 
             // FIXME we should put this in a separate file, and add a updateConfig
             // method
