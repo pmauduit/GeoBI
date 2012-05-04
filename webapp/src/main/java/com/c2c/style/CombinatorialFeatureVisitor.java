@@ -20,7 +20,6 @@ public class CombinatorialFeatureVisitor implements FeatureVisitor {
         this.calculations = new ArrayList<FeatureCalc>(calculations);
     }
 
-    @Override
     public void visit(Feature feature) {
         for (FeatureCalc calculation : calculations) {
             calculation.visit(feature);

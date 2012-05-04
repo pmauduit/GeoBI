@@ -454,12 +454,10 @@ public class StyleGenerationParams {
                     }
                 };
 
-                @Override
                 public CalcResult getResult() {
                     return calc;
                 }
 
-                @Override
                 public void visit(Feature feature) {
                     // do some calculation here
                 }

@@ -15,7 +15,6 @@ public class OlapPropertyAccessorFactory implements
         PropertyAccessorFactory {
     private static final OlapPropertyAccessor ACCESSOR = new OlapPropertyAccessor();
 
-    @Override
     public PropertyAccessor createPropertyAccessor(Class type, String xpath,
             Class target, Hints hints) {
         if(canHandle(type,xpath)) {
@@ -30,17 +29,14 @@ public class OlapPropertyAccessorFactory implements
     }
 
     private static class OlapPropertyAccessor implements PropertyAccessor {
-        @Override
         public boolean canHandle(Object obj, String xpath, Class target) {
             return OlapPropertyAccessorFactory.canHandle(obj.getClass(), xpath);  //To change body of implemented methods use File | Settings | File Templates.
         }
 
-        @Override
         public Object get(Object obj, String xpath, Class target) throws IllegalArgumentException {
             return ((SimpleFeature)obj).getAttribute(xpath);
         }
 
-        @Override
         public void set(Object object, String xpath, Object value, Class target) throws IllegalArgumentException {
             ((SimpleFeature)object).setAttribute(xpath,value);
         }

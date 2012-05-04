@@ -87,13 +87,11 @@ public class CaseInsensitiveParamFilter implements Filter {
 		chain.doFilter(overridenRequest, response);
 	}
 
-	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
 	public void init(FilterConfig arg0) throws ServletException {
 		// TODO Auto-generated method stub
 
