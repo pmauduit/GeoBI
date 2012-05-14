@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Schema name="pg_CLC90_00">
+<Schema name="pg_CLC_90_00">
    
     <!-- Shared dimensions -->
 
-        <Dimension name="CHANGES 90-00">
-            <Hierarchy name="CHANGES" hasAll="true" allMemberName="All changes" primaryKey="CHANGE_CODE" primaryKeyTable="CHANGE_CODES">
-                <Table name="CHANGE_CODES"/>
-                <Level name="CHANGES" table="CHANGE_CODES" column="CHANGE" uniqueMembers="false"/>
+        <Dimension name="CHANGES">
+            <Hierarchy name="CHANGES" hasAll="true" allMemberName="All changes" primaryKey="change_code" primaryKeyTable="change_codes_v13_3dates">
+                <Table name="change_codes_v13_3dates"/>
+                <Level name="CHANGES" table="change_codes_v13_3dates" column="change" uniqueMembers="false"/>
             </Hierarchy>
         </Dimension>
 
-        <Dimension name="LAND COVER FLOWS 90-00">
-            <Hierarchy name="LCF" hasAll="true" allMemberName="All Land Cover Flows" primaryKey="CHANGE_CODE" primaryKeyTable="CHANGE_CODES">
-                <Join leftKey="LCF" rightKey="LCF3_CODE">
-                  <Table name="CHANGE_CODES"/>
-                  <Table name="DEFS_LCF"/>
+        <Dimension name="LAND COVER FLOWS">
+            <Hierarchy name="LCF" hasAll="true" allMemberName="All Land Cover Flows" primaryKey="change_code" primaryKeyTable="change_codes_v13_3dates">
+                <Join leftKey="lcf3" rightKey="lcf3_code">
+                  <Table name="change_codes_v13_3dates"/>
+                  <Table name="defs_lcf_3_dates"/>
                 </Join>
-                <Level name="LCF LEVEL 1" table="DEFS_LCF" column="LCF1_NAME" uniqueMembers="false"/>
-                <Level name="LCF LEVEL 2" table="DEFS_LCF" column="LCF2_NAME" uniqueMembers="false"/>
-                <Level name="LCF LEVEL 3" table="DEFS_LCF" column="LCF3_NAME" uniqueMembers="true"/>
+                <Level name="LCF LEVEL 1" table="defs_lcf_3_dates" column="lcf1_name" uniqueMembers="false"/>
+                <Level name="LCF LEVEL 2" table="defs_lcf_3_dates" column="lcf2_name" uniqueMembers="false"/>
+                <Level name="LCF LEVEL 3" table="defs_lcf_3_dates" column="lcf3_name" uniqueMembers="true"/>
             </Hierarchy>
         </Dimension>
+
 
         <!-- This dimension is redundant with the previous one and its initial definition has been commented -->
 	<!--
-	<Dimension name="LAND COVER FLOWS 90-00 LEVEL 3" foreignKey="CHANGE_CODE">
-            <Hierarchy name="LCF_L3" hasAll="true" allMemberName="All Land Cover Flows" primaryKey="CHANGE_CODE" primaryKeyTable="CHANGE_CODES">
+	<Dimension name="LAND COVER FLOWS 90-00 LEVEL 3" foreignKey="change_code">
+            <Hierarchy name="LCF_L3" hasAll="true" allMemberName="All Land Cover Flows" primaryKey="change_code" primaryKeyTable="change_codes_v13_3dates">
                 <Join leftKey="LCF" rightKey="LCF3_CODE">
-                  <Table name="CHANGE_CODES"/>
+                  <Table name="change_codes_v13_3dates"/>
                   <Table name="DEFS_LCF"/>
                 </Join>
                 <Level name="LCF LEVEL 3" table="DEFS_LCF" column="LCF3_NAME" uniqueMembers="true"/>
@@ -36,169 +37,275 @@
 	-->
 
         <Dimension name="LAND COVER 90">
-            <Hierarchy name="CLC_90" hasAll="true" allMemberName="All Land Covers 90" primaryKey="CHANGE_CODE" primaryKeyTable="CHANGE_CODES">
-                <Join leftKey="LC1" rightKey="LEVEL3_CODE">
-                  <Table name="CHANGE_CODES"/>
-                  <Table name="DEFS_CLC"/>
+            <Hierarchy name="CLC_90" hasAll="true" allMemberName="All Land Covers 90" primaryKey="change_code" primaryKeyTable="change_codes_v13_3dates">
+                <Join leftKey="lc1" rightKey="level3_code">
+                  <Table name="change_codes_v13_3dates"/>
+                  <Table name="defs_clc_06v13"/>
                 </Join>
-                <Level name="CLC90 LEVEL 1" table="DEFS_CLC" column="L1_ALL" uniqueMembers="false"/>
-                <Level name="CLC90 LEVEL 2" table="DEFS_CLC" column="L2_ALL" uniqueMembers="false"/>
-                <Level name="CLC90 LEVEL 3" table="DEFS_CLC" column="L3_ALL" uniqueMembers="true"/>
+                <Level name="CLC90 LEVEL 1" table="defs_clc_06v13" column="l1_all" uniqueMembers="false"/>
+                <Level name="CLC90 LEVEL 2" table="defs_clc_06v13" column="l2_all" uniqueMembers="false"/>
+                <Level name="CLC90 LEVEL 3" table="defs_clc_06v13" column="l3_all" uniqueMembers="true"/>
             </Hierarchy>
         </Dimension>
 
+
         <!-- This dimension is redundant with the previous one and its initial definition has been commented -->
 	<!--
-        <Dimension name="LAND COVER 90 LEVEL 3" foreignKey="CHANGE_CODE">
-            <Hierarchy name="CLC_90_L3" hasAll="true" allMemberName="All Land Covers 90" primaryKey="CHANGE_CODE" primaryKeyTable="CHANGE_CODES">
-                <Join leftKey="LC1" rightKey="LEVEL3_CODE">
-                  <Table name="CHANGE_CODES"/>
-                  <Table name="DEFS_CLC"/>
+        <Dimension name="LAND COVER 90 LEVEL 3" foreignKey="change_code">
+            <Hierarchy name="CLC_90_L3" hasAll="true" allMemberName="All Land Covers 90" primaryKey="change_code" primaryKeyTable="change_codes_v13_3dates">
+                <Join leftKey="LC1" rightKey="level3_code">
+                  <Table name="change_codes_v13_3dates"/>
+                  <Table name="defs_clc_06v13"/>
                 </Join>
-                <Level name="CLC90 LEVEL 3" table="DEFS_CLC" column="L3_ALL" uniqueMembers="true"/>
+                <Level name="CLC90 LEVEL 3" table="defs_clc_06v13" column="l3_all" uniqueMembers="true"/>
             </Hierarchy>
         </Dimension>
 	-->
 
         <Dimension name="LAND COVER 00">
-            <Hierarchy name="CLC_00" hasAll="true" allMemberName="All Land Covers 00" primaryKey="CHANGE_CODE" primaryKeyTable="CHANGE_CODES">
-                <Join leftKey="LC2" rightKey="LEVEL3_CODE">
-                  <Table name="CHANGE_CODES"/>
-                  <Table name="DEFS_CLC"/>
+            <Hierarchy name="CLC_00" hasAll="true" allMemberName="All Land Covers 00" primaryKey="change_code" primaryKeyTable="change_codes_v13_3dates">
+                <Join leftKey="lc2" rightKey="level3_code">
+                  <Table name="change_codes_v13_3dates"/>
+                  <Table name="defs_clc_06v13"/>
                 </Join>
-                <Level name="CLC00 LEVEL 1" table="DEFS_CLC" column="L1_ALL" uniqueMembers="false"/>
-                <Level name="CLC00 LEVEL 2" table="DEFS_CLC" column="L2_ALL" uniqueMembers="false"/>
-                <Level name="CLC00 LEVEL 3" table="DEFS_CLC" column="L3_ALL" uniqueMembers="true"/>
+                <Level name="CLC00 LEVEL 1" table="defs_clc_06v13" column="l1_all" uniqueMembers="false"/>
+                <Level name="CLC00 LEVEL 2" table="defs_clc_06v13" column="l2_all" uniqueMembers="false"/>
+                <Level name="CLC00 LEVEL 3" table="defs_clc_06v13" column="l3_all" uniqueMembers="true"/>
             </Hierarchy>
         </Dimension>
-	
+
         <!-- This dimension is redundant with the previous one and its initial definition has been commented -->
 	<!--
-	<Dimension name="LAND COVER 00 LEVEL 3" foreignKey="CHANGE_CODE">
-            <Hierarchy name="CLC_00_L3" hasAll="true" allMemberName="All Land Covers 00" primaryKey="CHANGE_CODE" primaryKeyTable="CHANGE_CODES">
-                <Join leftKey="LC2" rightKey="LEVEL3_CODE">
-                  <Table name="CHANGE_CODES"/>
-                  <Table name="DEFS_CLC"/>
+	<Dimension name="LAND COVER 00 LEVEL 3" foreignKey="change_code">
+            <Hierarchy name="CLC_00_L3" hasAll="true" allMemberName="All Land Covers 00" primaryKey="change_code" primaryKeyTable="change_codes_v13_3dates">
+                <Join leftKey="LC2" rightKey="level3_code">
+                  <Table name="change_codes_v13_3dates"/>
+                  <Table name="defs_clc_06v13"/>
                 </Join>
-                <Level name="CLC00 LEVEL 3" table="DEFS_CLC" column="L3_ALL" uniqueMembers="true"/>
+                <Level name="CLC00 LEVEL 3" table="defs_clc_06v13" column="l3_all" uniqueMembers="true"/>
             </Hierarchy>
         </Dimension>
 	-->
 
-        <Dimension name="LAND COVER 90 LEAC">
-            <Hierarchy name="CLC_90LEAC" hasAll="true" allMemberName="All Land Covers 90" primaryKey="CHANGE_CODE" primaryKeyTable="CHANGE_CODES">
-                <Join leftKey="LC1" rightKey="LEVEL3_CODE">
-                  <Table name="CHANGE_CODES"/>
-                  <Table name="DEFS_CLC"/>
+		<!-- Note that this definition uses the same tables and fields as  identical "LAND COVER 00".
+		     This is CORRECT, as the right foreign key on the fact table is layer chosen using the
+		     DimensionUsage element.
+		-->
+        <Dimension name="LAND COVER 06">
+            <Hierarchy name="CLC_06" hasAll="true" allMemberName="All Land Covers 06" primaryKey="change_code" primaryKeyTable="change_codes_v13_3dates">
+                <Join leftKey="lc2" rightKey="level3_code">
+                  <Table name="change_codes_v13_3dates"/>
+                  <Table name="defs_clc_06v13"/>
                 </Join>
-                <Level name="CLC90 LEVEL 1" table="DEFS_CLC" column="L1B_ALL" uniqueMembers="false"/>
-                <Level name="CLC90 LEVEL 2" table="DEFS_CLC" column="L2B_ALL" uniqueMembers="false"/>
-                <Level name="CLC90 LEVEL 3" table="DEFS_CLC" column="L3_ALL" uniqueMembers="true"/>
+                <Level name="CLC06 LEVEL 1" table="defs_clc_06v13" column="l1_all" uniqueMembers="false"/>
+                <Level name="CLC06 LEVEL 2" table="defs_clc_06v13" column="l2_all" uniqueMembers="false"/>
+                <Level name="CLC06 LEVEL 3" table="defs_clc_06v13" column="l3_all" uniqueMembers="true"/>
+            </Hierarchy>
+        </Dimension>
+
+	<!-- CMI commented for the moment
+        <Dimension name="LAND COVER 90 LEAC">
+            <Hierarchy name="CLC_90LEAC" hasAll="true" allMemberName="All Land Covers 90" primaryKey="change_code" primaryKeyTable="change_codes_v13_3dates">
+                <Join leftKey="lc1" rightKey="level3_code">
+                  <Table name="change_codes_v13_3dates"/>
+                  <Table name="defs_clc_06v13"/>
+                </Join>
+                <Level name="CLC90 LEVEL 1" table="defs_clc_06v13" column="l1b_all" uniqueMembers="false"/>
+                <Level name="CLC90 LEVEL 2" table="defs_clc_06v13" column="l2b_all" uniqueMembers="false"/>
+                <Level name="CLC90 LEVEL 3" table="defs_clc_06v13" column="l3_all" uniqueMembers="true"/>
             </Hierarchy>
         </Dimension>
         
 	<Dimension name="LAND COVER 00 LEAC">
-            <Hierarchy name="CLC_00LEAC" hasAll="true" allMemberName="All Land Covers 00" primaryKey="CHANGE_CODE" primaryKeyTable="CHANGE_CODES">
-                <Join leftKey="LC2" rightKey="LEVEL3_CODE">
-                  <Table name="CHANGE_CODES"/>
-                  <Table name="DEFS_CLC"/>
+            <Hierarchy name="CLC_00LEAC" hasAll="true" allMemberName="All Land Covers 00" primaryKey="change_code" primaryKeyTable="change_codes_v13_3dates">
+                <Join leftKey="lc2" rightKey="level3_code">
+                  <Table name="change_codes_v13_3dates"/>
+                  <Table name="defs_clc_06v13"/>
                 </Join>
-                <Level name="CLC00 LEVEL 1" table="DEFS_CLC" column="L1B_ALL" uniqueMembers="false"/>
-                <Level name="CLC00 LEVEL 2" table="DEFS_CLC" column="L2B_ALL" uniqueMembers="false"/>
-                <Level name="CLC00 LEVEL 3" table="DEFS_CLC" column="L3_ALL" uniqueMembers="true"/>
+                <Level name="CLC00 LEVEL 1" table="defs_clc_06v13" column="l1b_all" uniqueMembers="false"/>
+                <Level name="CLC00 LEVEL 2" table="defs_clc_06v13" column="l2b_all" uniqueMembers="false"/>
+                <Level name="CLC00 LEVEL 3" table="defs_clc_06v13" column="l3_all" uniqueMembers="true"/>
             </Hierarchy>
         </Dimension>
-	
+
 	<Dimension name="DOMINANT LAND COVER">
             <Hierarchy name="DLT" hasAll="true" allMemberName="All Dominant Land Covers" primaryKey="DLT_ID">
                 <Table name="DEFS_DLT"/>
                 <Level name="EDOMINANT LAND COVER" table="DEFS_DLT" column="DLT_NM" uniqueMembers="true"/>
             </Hierarchy>
         </Dimension>
-
+-->
     <!-- Here starts the definition of the cubes -->
 
-    <Cube name="pg_CLC90_00" enabled="true">
-        <Table name="CLC90_00" />
+    <Cube name="pg_CLC_90_00" enabled="true">
+        <Table name="espon_20072011" />
 
-        <Dimension name="NUTS" foreignKey="N3_ID">
-            <Hierarchy name="NUTS" hasAll="true" allMemberName="All NUTS" primaryKey="N3_ID">
-                <Table name="DEFS_NUTS"/>
-                <Level name="NUTS LEVEL 0" table="DEFS_NUTS" column="N0_CDNM" uniqueMembers="false">
+        <Dimension name="NUTS 2006" foreignKey="nuts06_id">
+            <Hierarchy name="NUTS" hasAll="true" allMemberName="All NUTS" primaryKey="n3_id">
+                <Table name="defs_nuts_2006v13"/>
+                <Level name="NUTS 2006 LEVEL 0" table="defs_nuts_2006v13" column="n0_cdnem" uniqueMembers="false">
                     <Property name="geom" column="the_geom_n0" type="Geometry" />
                     <Property name="pointgeom" column="the_geom_baryc_n0" type="Geometry" />
                 </Level>
-                <Level name="NUTS LEVEL 1" table="DEFS_NUTS" column="N1_CDNM" uniqueMembers="false">
+                <Level name="NUTS 2006 LEVEL 1" table="defs_nuts_2006v13" column="n1_cdnm" uniqueMembers="false">
                     <Property name="geom" column="the_geom_n1" type="Geometry" />
                     <Property name="pointgeom" column="the_geom_baryc_n1" type="Geometry" />
                 </Level>
-                <Level name="NUTS LEVEL 2" table="DEFS_NUTS" column="N2_CDNM" uniqueMembers="false">
+                <Level name="NUTS 2006 LEVEL 2" table="defs_nuts_2006v13" column="n2_cdnm" uniqueMembers="false">
                     <Property name="geom" column="the_geom_n2" type="Geometry" />
                     <Property name="pointgeom" column="the_geom_baryc_n2" type="Geometry" />
                 </Level>
-                <Level name="NUTS LEVEL 3" table="DEFS_NUTS" column="N3_CDNM" uniqueMembers="true">
+                <Level name="NUTS 2006 LEVEL 3" table="defs_nuts_2006v13" column="n3_cdnm" uniqueMembers="true">
                     <Property name="geom" column="the_geom_n3" type="Geometry" />
                     <Property name="pointgeom" column="the_geom_baryc_n3" type="Geometry" />
                 </Level>
             </Hierarchy>
         </Dimension>
 
+    <!-- CMI: Commented out till we solve a problem with Belgium - BE???? geometry 
+    <Dimension name="NUTS 2003" foreignKey="nuts03_id">
+        <Hierarchy name="NUTS" hasAll="true" allMemberName="All NUTS" primaryKey="n3_id_2003">
+            <Table name="defs_nuts_2003v13"/>
+            <Level name="NUTS 2003 LEVEL 0" table="defs_nuts_2003v13" column="n0_cdnmen" uniqueMembers="false">
+                <Property name="geom" column="the_geom_n0" type="Geometry" />
+                <Property name="pointgeom" column="the_geom_baryc_n0" type="Geometry" />
+            </Level>
+            <Level name="NUTS 2003 LEVEL 1" table="defs_nuts_2003v13" column="n1_cdnm" uniqueMembers="false">
+                <Property name="geom" column="the_geom_n1" type="Geometry" />
+                <Property name="pointgeom" column="the_geom_baryc_n1" type="Geometry" />
+            </Level>
+            <Level name="NUTS 2003 LEVEL 2" table="defs_nuts_2003v13" column="n2_cdnm" uniqueMembers="false">
+                <Property name="geom" column="the_geom_n2" type="Geometry" />
+                <Property name="pointgeom" column="the_geom_baryc_n2" type="Geometry" />
+            </Level>
+            <Level name="NUTS 2003 LEVEL 3" table="defs_nuts_2003v13" column="n3_cdnm" uniqueMembers="true">
+                <Property name="geom" column="the_geom_n3" type="Geometry" />
+                <Property name="pointgeom" column="the_geom_baryc_n3" type="Geometry" />
+            </Level>
+        </Hierarchy>
+    </Dimension>
+    -->
+
         <!-- This dimension is redundant with the previous one and its initial definition has been commented -->
 	<!--
-        <Dimension name="NUTS LEVEL3" foreignKey="N3_ID">
-            <Hierarchy name="NUTS_L3" hasAll="true" allMemberName="All NUTS" primaryKey="N3_ID">
-                <Table name="DEFS_NUTS"/>
-                <Level name="NUTS LEVEL 3" table="DEFS_NUTS" column="N3_CDNM" uniqueMembers="true"/>
+        <Dimension name="NUTS LEVEL3" foreignKey="n3_id">
+            <Hierarchy name="NUTS_L3" hasAll="true" allMemberName="All NUTS" primaryKey="n3_id">
+                <Table name="defs_nuts_2006v13"/>
+                <Level name="NUTS LEVEL 3" table="defs_nuts_2006v13" column="n3_cdnm" uniqueMembers="true"/>
             </Hierarchy>
         </Dimension>
 	-->
 
-	<Dimension name="BIOGEOGRAPHIC REGIONS" foreignKey="RBIO_ID">
-            <Hierarchy name="RBIO" hasAll="true" allMemberName="All Biogeographic Regions" primaryKey="RBIO_ID">
-                <Table name="DEFS_RBIO"/>
-                <Level name="BIOGEOGRAPHIC REGION" table="DEFS_RBIO" column="RBIO_NM" uniqueMembers="true">
-                    <Property name="geom" column="THE_GEOM" type="Geometry" />
-                    <Property name="pointgeom" column="THE_GEOM_BARYC" type="Geometry" />
-                </Level>
-            </Hierarchy>
-        </Dimension>
+    <Dimension name="ELEVATION BREAKDOWN" foreignKey="ebk_id">
+        <Hierarchy name="EBK" hasAll="true" allMemberName="All Elevation Breakdowns" primaryKey="ebk_id">
+            <Table name="defs_ebkv13"/>
+            <Level name="ELEVATION BREAKDOWN" table="defs_ebkv13" column="ebk_nm" uniqueMembers="true">
+                <Property name="geom" column="the_geom" type="Geometry" />
+                <Property name="pointgeom" column="the_geom_baryc" type="Geometry" />
+            </Level>
+        </Hierarchy>
+    </Dimension>
+    
+    <Dimension name="BIOGEOGRAPHIC REGIONS" foreignKey="rbio_id">
+        <Hierarchy name="RBIO" hasAll="true" allMemberName="All Biogeographic Regions" primaryKey="rbio_id_2008">
+            <Table name="defs_rbio_2008v13"/>
+            <Level name="BIOGEOGRAPHIC REGION" table="defs_rbio_2008v13" column="rbio_nm" uniqueMembers="true">
+                <Property name="geom" column="the_geom" type="Geometry" />
+                <Property name="pointgeom" column="the_geom_baryc" type="Geometry" />
+            </Level>
+        </Hierarchy>
+    </Dimension>
 
-	<Dimension name="REGIONAL SEA BASINS" foreignKey="RSEA_ID">
-            <Hierarchy name="RSEA" hasAll="true" allMemberName="All Regional Sea Basins" primaryKey="RSEA_ID">
-                <Table name="DEFS_RSEA"/>
-                <Level name="SEA BASINS" table="DEFS_RSEA" column="RSEA_NM" uniqueMembers="true">
-                    <Property name="geom" column="the_geom" type="Geometry" />
-                    <Property name="pointgeom" column="the_geom_baryc" type="Geometry" />
-                </Level>
-            </Hierarchy>
-        </Dimension>
+    <Dimension name="RIVER BASIN DISTRICTS" foreignKey="rbd_id">
+        <Hierarchy name="RBDS" hasAll="true" allMemberName="All Regional Sea Basins" primaryKey="rbd3_id">
+            <Table name="defs_rbdsv13"/>
+            <Level name="RIVER BASINS L1" table="defs_rbdsv13" column="rbd1o_nm" uniqueMembers="true">
+            	<Property name="geom" column="the_geom_l1" type="Geometry" />
+            	<Property name="pointgeom" column="the_geom_baryc_l1" type="Geometry" />
+            </Level>
+            <Level name="RIVER BASINS L2" table="defs_rbdsv13" column="rbd2s_nm" uniqueMembers="true">
+            	<Property name="geom" column="the_geom_l2" type="Geometry" />
+            	<Property name="pointgeom" column="the_geom_baryc_l2" type="Geometry" />
+            </Level>
+            <Level name="RIVER BASINS L3" table="defs_rbdsv13" column="rbd3_nm" uniqueMembers="true">
+            	<Property name="geom" column="the_geom" type="Geometry" />
+            	<Property name="pointgeom" column="the_geom_baryc" type="Geometry" />
+            </Level>
+        </Hierarchy>
+    </Dimension>
 
-	<Dimension name="ELEVATION BREAKDOWN" foreignKey="EBK_ID">
-            <Hierarchy name="EBK" hasAll="true" allMemberName="All Elevation Breakdowns" primaryKey="EBK_ID">
-                <Table name="DEFS_EBK"/>
-                <Level name="ELEVATION BREAKDOWN" table="DEFS_EBK" column="EBK_NM" uniqueMembers="true">
-                    <Property name="geom" column="the_geom" type="Geometry" />
-                    <Property name="pointgeom" column="the_geom_baryc" type="Geometry" />
-                </Level>
-            </Hierarchy>
-        </Dimension>
+    <Dimension name="MASSIFS" foreignKey="massifs_id">
+        <Hierarchy name="MASSIFS" hasAll="true" allMemberName="All Massifs" primaryKey="massifs_id">
+            <Table name="defs_massifsv13"/>
+            <Level name="MASSIFS" table="defs_massifsv13" column="massifs_nm" uniqueMembers="true">
+                <Property name="geom" column="the_geom" type="Geometry" />
+                <Property name="pointgeom" column="the_geom_baryc" type="Geometry" />
+            </Level>
+        </Hierarchy>
+    </Dimension>
 
+    <Dimension name="REGIONAL SEA BASINS" foreignKey="rsea_id">
+        <Hierarchy name="SEA BASINS" hasAll="true" allMemberName="All LUZ" primaryKey="rsea_id">
+            <Table name="defs_rseav13"/>
+            <Level name="SEA BASINS" table="defs_rseav13" column="rsea_nm" uniqueMembers="true">
+                <Property name="geom" column="the_geom" type="Geometry" />
+                <Property name="pointgeom" column="the_geom_baryc" type="Geometry" />
+            </Level>
+        </Hierarchy>
+    </Dimension>
+
+    <Dimension name="CITIES" foreignKey="city_id">
+        <Hierarchy name="CITIES" hasAll="true" allMemberName="All Cities" primaryKey="city_id">
+            <Table name="defs_citiesv13"/>
+            <Level name="CITIES" table="defs_citiesv13" column="city_nm" uniqueMembers="true">
+                <Property name="geom" column="the_geom" type="Geometry" />
+                <Property name="pointgeom" column="the_geom_baryc" type="Geometry" />
+            </Level>
+        </Hierarchy>
+    </Dimension>
+
+    <Dimension name="LARGE URBAN ZONES" foreignKey="luz_id">
+        <Hierarchy name="LUZ" hasAll="true" allMemberName="All LUZ" primaryKey="luz_id">
+            <Table name="defs_luzv13"/>
+            <Level name="LUZ" table="defs_luzv13" column="luz_nm" uniqueMembers="true">
+                <Property name="geom" column="the_geom" type="Geometry" />
+                <Property name="pointgeom" column="the_geom_baryc" type="Geometry" />
+            </Level>
+        </Hierarchy>
+    </Dimension>
+
+    <Dimension name="DOMINANT LAND COVER TYPES 2006" foreignKey="dlt06_id">
+            <Hierarchy name="DLT" hasAll="true" allMemberName="All Cover Types" primaryKey="dlt_id" primaryKeyTable="defs_dlt_06v13">
+                <Table name="defs_dlt_06v13"/>
+                <Level name="DLT2006" table="defs_dlt_06v13" column="dlt_cdnm" uniqueMembers="true"/>
+            </Hierarchy>
+    </Dimension>
+
+
+-->
         <!-- Add the shared dimensions to the cube -->
-	<DimensionUsage name="CHANGES 90-00" source="CHANGES 90-00" foreignKey="CHANGE_CODE" />
-	<DimensionUsage name="LAND COVER FLOWS 90-00" source="LAND COVER FLOWS 90-00" foreignKey="CHANGE_CODE" />
-	<DimensionUsage name="LAND COVER 90" source="LAND COVER 90" foreignKey="CHANGE_CODE" />
-	<DimensionUsage name="LAND COVER 00" source="LAND COVER 00" foreignKey="CHANGE_CODE" />
-	<DimensionUsage name="LAND COVER 90 LEAC" source="LAND COVER 90 LEAC" foreignKey="CHANGE_CODE" />
-	<DimensionUsage name="LAND COVER 00 LEAC" source="LAND COVER 00 LEAC" foreignKey="CHANGE_CODE" />
-	<DimensionUsage name="DOMINANT LAND COVER" source="DOMINANT LAND COVER" foreignKey="DLT_ID" />
+    <DimensionUsage name="LAND COVER 90" source="LAND COVER 90" foreignKey="ch9000" />
+	<DimensionUsage name="LAND COVER 00" source="LAND COVER 00" foreignKey="ch9000" />
+	<DimensionUsage name="LAND COVER 06" source="LAND COVER 06" foreignKey="ch0006" />
+	<DimensionUsage name="LAND COVER FLOWS 90-00" source="LAND COVER FLOWS" foreignKey="ch9000" />
+	<DimensionUsage name="LAND COVER FLOWS 00-06" source="LAND COVER FLOWS" foreignKey="ch0006" />
+	<DimensionUsage name="LAND COVER FLOWS 90-06" source="LAND COVER FLOWS" foreignKey="ch9006" />	
+	<DimensionUsage name="CHANGES 90-00" source="CHANGES" foreignKey="ch9000" />
+	<DimensionUsage name="CHANGES 00-06" source="CHANGES" foreignKey="ch0006" />
 
+<!-- CMI commented for the moment
+	<DimensionUsage name="LAND COVER 90 LEAC" source="LAND COVER 90 LEAC" foreignKey="change_code" />
+	<DimensionUsage name="LAND COVER 00 LEAC" source="LAND COVER 00 LEAC" foreignKey="change_code" />
+	<DimensionUsage name="DOMINANT LAND COVER" source="DOMINANT LAND COVER" foreignKey="DLT_ID" />
+-->
 	<!-- Definition of measures and calculated members -->
-        <Measure name="AREAHA" column="AREAHA" aggregator="sum" datatype="Numeric" formatString="#,##0.###"/>
+    <Measure name="AREAHA" column="areaha" aggregator="sum" datatype="Numeric" formatString="#,##0.0"/>
+<!-- CMI commented for the moment
         <Measure name="PERIOD" visible="false" column="PERIOD" aggregator="sum" datatype="Numeric" formatString="#,##0.###"/>
         <CalculatedMember name="AREA_PER_YEAR" dimension="Measures" formula="[Measures].[AREAHA]/[Measures].[PERIOD]">
             <CalculatedMemberProperty name="FORMAT_STRING" value="#.##0,###"/>
         </CalculatedMember>
-
+-->
     </Cube>
 
     <!-- Add support for geo-analytical operators brought by GeoMondrian -->
