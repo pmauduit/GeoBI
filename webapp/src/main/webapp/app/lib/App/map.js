@@ -291,6 +291,10 @@ App.map = function() {
         region: 'center',
         border: false,
         map: {
+            maxExtent: new OpenLayers.Bounds(943657.8520000001,941523.6410000001,7601956.61,6824985.259000001),
+        	//maxExtent: new OpenLayers.Bounds(-31.256761, 27.638029, 44.818830, 71.185417),
+            projection: 'EPSG:3035',
+            units: 'm',
             maxResolution: 'auto',
             controls: [new OpenLayers.Control.Navigation()]
         },
