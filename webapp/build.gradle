@@ -109,7 +109,7 @@ def minifiedApp = new File(minifiedJsOut, 'app-all.js')
 def combinedApp = new File(combinedOut,"app-combined.js")
 
 task (svnExportExternals) << {
-  if (! new File("src/main/webapp/lib/externals/ext").exists()) {
+  if (! new File("webapp/src/main/webapp/lib/externals/ext").exists()) {
     exec {
       executable = 'svn'
         args = ['export',
@@ -118,7 +118,7 @@ task (svnExportExternals) << {
     }
   }
 
-  if (! new File("src/main/webapp/lib/externals/geoext").exists()) {
+  if (! new File("webapp/src/main/webapp/lib/externals/geoext").exists()) {
     exec {
       executable = 'svn'
         args = ['export',
@@ -128,7 +128,7 @@ task (svnExportExternals) << {
   }
 
 
-  if (! new File("src/main/webapp/lib/externals/loadingpanel").exists()) {
+  if (! new File("webapp/src/main/webapp/lib/externals/loadingpanel").exists()) {
     exec {
       executable = 'svn'
         args = ['export',
@@ -137,7 +137,7 @@ task (svnExportExternals) << {
     }
   }
 
-  if (! new File("src/main/webapp/lib/externals/openlayers").exists()) {
+  if (! new File("webapp/src/main/webapp/lib/externals/openlayers").exists()) {
     exec {
       executable = 'svn'
         args = ['export',
