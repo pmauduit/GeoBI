@@ -300,9 +300,16 @@ App.map = function() {
         },
         layers: [
             new OpenLayers.Layer.WMS(
-              "OpenLayers WMS",
-              "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: 'basic'}
-              )
+                'countries',
+                './getbaselayer',
+                {
+                    format: 'image/png'
+                },
+                {
+                    isBaseLayer: true,
+                    singleTile: true
+                }
+            )
         ]
     });
 
