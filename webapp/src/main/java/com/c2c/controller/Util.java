@@ -132,6 +132,21 @@ public final class Util {
     	return ret.toArray(new String[ret.size()]);
     }
     
+    public static String getConcatenatedIndicators(DataQueryFeatureSource results, String[] indicList) {
+    	
+    	StringBuffer buf = new StringBuffer();
+    	
+    	HashMap<String, String> indic = lookupIndicators(results);
+    	for (int i = 0 ; i < indicList.length ; i++)
+    	{
+    		buf.append(indic.get(indicList[i]));
+    		if (i!=indicList.length-1) {
+    			buf.append(" / ");
+    		}
+    	}
+    	return buf.toString();
+    }
+    
     public static String getSymbolsDimensions(DataQueryFeatureSource results) {
     	
     	String dims = "";
