@@ -1,36 +1,50 @@
 package com.c2c.style;
 
-import com.c2c.controller.GetOverlayIcon;
-import com.c2c.controller.Util;
+import static com.c2c.controller.Util.createDefaultStyle;
+import static com.c2c.controller.Util.defaultStroke;
+import static java.lang.Integer.parseInt;
+import static org.geotools.brewer.color.StyleGenerator.ELSEMODE_IGNORE;
+import static org.geotools.brewer.color.StyleGenerator.createFeatureTypeStyle;
+import static org.geotools.factory.CommonFactoryFinder.getFilterFactory2;
+import static org.geotools.styling.SLD.featureTypeStyle;
 
-import org.geotools.brewer.color.StyleGenerator;
+import java.awt.Color;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.factory.GeoTools;
-import org.geotools.feature.visitor.*;
+import org.geotools.feature.visitor.AbstractCalcResult;
+import org.geotools.feature.visitor.CalcResult;
+import org.geotools.feature.visitor.FeatureCalc;
+import org.geotools.feature.visitor.MaxVisitor;
+import org.geotools.feature.visitor.MinVisitor;
 import org.geotools.filter.Expression;
-import org.geotools.filter.function.*;
-import org.geotools.styling.*;
+import org.geotools.filter.function.ClassificationFunction;
+import org.geotools.filter.function.Classifier;
+import org.geotools.filter.function.EqualIntervalFunction;
+import org.geotools.filter.function.QuantileFunction;
+import org.geotools.filter.function.StandardDeviationFunction;
+import org.geotools.styling.ExternalGraphic;
+import org.geotools.styling.FeatureTypeStyle;
+import org.geotools.styling.Graphic;
+import org.geotools.styling.Mark;
+import org.geotools.styling.PointSymbolizer;
+import org.geotools.styling.Style;
+import org.geotools.styling.StyleBuilder;
+import org.geotools.styling.StyleFactory2;
+import org.geotools.styling.StyleFactoryImpl;
+import org.geotools.styling.Symbolizer;
 import org.geotools.styling.visitor.DuplicatingStyleVisitor;
 import org.geotools.util.NullProgressListener;
-import org.omg.CORBA.portable.IndirectionException;
 import org.opengis.feature.Feature;
 import org.opengis.feature.type.GeometryDescriptor;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
 
-import java.awt.*;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import static com.c2c.controller.Util.createDefaultStyle;
-import static com.c2c.controller.Util.defaultStroke;
-import static java.lang.Integer.parseInt;
-import static org.geotools.brewer.color.StyleGenerator.ELSEMODE_IGNORE;
-import static org.geotools.brewer.color.StyleGenerator.createFeatureTypeStyle;
-import static org.geotools.factory.CommonFactoryFinder.*;
-import static org.geotools.styling.SLD.featureTypeStyle;
+import com.c2c.controller.GetOverlayIcon;
+import com.c2c.controller.Util;
 
 public class StyleGenerationParams {
 	
