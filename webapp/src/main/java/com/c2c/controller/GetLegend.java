@@ -209,7 +209,7 @@ public class GetLegend extends AbstractQueryingController {
 				/* count each lines then 10 * nblines */
 				try{
 					int nbRows = rs.getFeatureSource().getFeatures().size();
-					height += (25 * nbRows);
+					height += 40 + (25 * nbRows);
 
 				} catch (IOException e) {
 					// Unable to get the number of rows of 
