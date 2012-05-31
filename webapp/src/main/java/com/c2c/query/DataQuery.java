@@ -70,7 +70,7 @@ public class DataQuery extends AbstractQuery<DataQueryFeatureSource> {
         	String levelUniqueName = (String) m.getPropertyValue(Property.StandardMemberProperty.LEVEL_UNIQUE_NAME);
         	String memberName = (String) m.getPropertyValue(Property.StandardMemberProperty.MEMBER_NAME);
         	String memberUniqueName = (String) m.getPropertyValue(Property.StandardMemberProperty.MEMBER_UNIQUE_NAME);
-    		dataQueryFeatures.addMember(type, dimensionUniqueName, levelUniqueName, memberName, memberUniqueName);
+    		dataQueryFeatures.addMember(type, dimensionUniqueName, levelUniqueName, memberName.trim(), memberUniqueName);
     	}
     }
     
