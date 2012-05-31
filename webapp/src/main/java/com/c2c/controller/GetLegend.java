@@ -2,24 +2,17 @@ package com.c2c.controller;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.font.FontRenderContext;
-import java.awt.font.LineBreakMeasurer;
-import java.awt.font.TextAttribute;
-import java.awt.font.TextLayout;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.text.AttributedString;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Formatter;
-import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -199,10 +192,11 @@ public class GetLegend extends AbstractQueryingController {
 		//  choropleth
 		if (sld.isChoroplethsEnabled())
 		{
+			String [] indicators = {sld.getChoroplethsIndicator()};
+			choropletIndicator = Util.getConcatenatedIndicators(rs, indicators);
 			if (sld.getNbClasses() > 0) {
-				//height += (48 + (30 + 5) * sld.getNbClasses());
-				// 25 px by nbclasses / number of results in the resultset
-				height += (25 * sld.getNbClasses());
+				// 40 px for the header + 25 px by nbclasses / number of results in the resultset
+				height += 40 + (25 * sld.getNbClasses());
 			} else
 
 			{
@@ -216,10 +210,7 @@ public class GetLegend extends AbstractQueryingController {
 					// our resultset. Considering we got 5 lines.
 					height += (25 * 5);
 				}
-
 			}
-			String [] indicators = {sld.getChoroplethsIndicator()};
-			choropletIndicator = Util.getHumanReadableIndicators(rs, indicators)[0];
 		}
 		if (sld.isOverlaySymbolsEnabled())
 		{
@@ -230,13 +221,13 @@ public class GetLegend extends AbstractQueryingController {
 				height += (42 + sld.getMaxOverlaySize() + N_PROP_CLASSES * (sld.getMaxOverlaySize() + 10));
 
 				String [] indicators = sld.getOverlayIndicators();
-				symbolIndicator = Util.getHumanReadableIndicators(rs, indicators)[0];
+				symbolIndicator = Util.getConcatenatedIndicators(rs, indicators);
 			}
 
 			// case 2 : pies or bars
 			// we are then prefetching the images we are going to use
 
-			if ((sld.getSymbolType() == SYMBOL_TYPE.BARS) || (sld.getSymbolType() == SYMBOL_TYPE.PIES))
+			else if ((sld.getSymbolType() == SYMBOL_TYPE.BARS) || (sld.getSymbolType() == SYMBOL_TYPE.PIES))
 			{
 				symbolIndicator = Util.getSymbolsDimensions(rs);
 				String type = sld.getSymbolType() == SYMBOL_TYPE.BARS ? "bar" : "pie";
@@ -327,7 +318,6 @@ public class GetLegend extends AbstractQueryingController {
 		int cur_v = 0, cur_h = 10; //position of current item in legend 
 		int box_w = 30, box_h = 20; //size of choropleth legend box in pixels
 
-		int width = lgds.getWidth();
 		BufferedImage chartSymbol = lgds.getChartSymbol();
 		BufferedImage overlayLegend = lgds.getOverlayLegend();
 
@@ -407,7 +397,7 @@ public class GetLegend extends AbstractQueryingController {
 				graphics.setFont(FONT_BOLD);
 				cur_v += (box_h + 6);
 
-				graphics.drawString("Symbols legend: ", cur_h, cur_v);
+				graphics.drawString("Overlay Symbols legend: ", cur_h, cur_v);
 				graphics.drawString(lgds.getSymbolIndicator(), cur_h, cur_v + 12);
 				graphics.setFont(FONT_NORMAL);
 
