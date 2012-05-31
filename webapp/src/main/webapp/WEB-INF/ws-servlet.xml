@@ -34,6 +34,11 @@
         <property name="cache" ref="cache"/>
     </bean>
     
+    <bean id="getprintlegend-controller" class="com.c2c.controller.GetPrintLegend">
+        <property name="queryFactory" ref="query-factory"/>
+        <property name="cache" ref="cache"/>
+    </bean>
+    
     <bean id="getchart-controller" class="com.c2c.controller.GetChart">
         <property name="queryFactory" ref="query-factory"/>
         <property name="cache" ref="cache"/>
