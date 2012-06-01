@@ -1,0 +1,5 @@
+ICONS:
+
+** 'oca_cube1.png' was downloaded from OpenClipart.org. It has been created by
+     'leogg' and it is on the public domain:
+      http://openclipart.org/detail/89209/rubiks-scrambled-by-leogg
