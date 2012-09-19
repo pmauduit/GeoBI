@@ -130,8 +130,14 @@ public class DataQuery extends AbstractQuery<DataQueryFeatureSource> {
         	}
             for (Position column : cellSet.getAxes().get(0)) {
                 final Cell cell = cellSet.getCell(column, row);
-              	feature.add(new DataAttribute(constructAttributeName(column.getMembers()),
-              			(Double) cell.getValue()));            	
+                if (cell.getValue()!=null) {
+                	feature.add(new DataAttribute(constructAttributeName(column.getMembers()),
+              			(Double) cell.getValue()));
+                }
+                else { // getDoubleValue() should do the trick according to API, but it raises an exception instead
+                	feature.add(new DataAttribute(constructAttributeName(column.getMembers()),
+                  			new Double(0.0)));
+                }
             }
             feature.add(new DataAttribute("geom", geom));
             feature.add(new DataAttribute("point", point));
