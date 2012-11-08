@@ -7,7 +7,8 @@ App.queryMgr = function(options) {
         'beforequeryregistered',
         'metadataloaded',
         'beforedataloaded',
-        'dataloaded'
+        'dataloaded',
+        'querycancelled'
     ]);
 
     /**
@@ -50,6 +51,34 @@ App.queryMgr = function(options) {
      */
     var query;
 
+    
+    /**
+     * Property: executionRules
+     * {Array(functions)}
+     *
+     * An array of rules (functions) to be checked (executed) before actually launching
+     * a query. This is useful to constrain the set of allowed queries, in order to build
+     * more specialized query builders. The query will only be executed when all the rules
+     * have been evaluated as true (all the functions return true).
+     */
+    var executionRules = [];
+  
+    /**
+     * Method: addExecutionRule
+     * Registers a new execution rule. A rule is a function to be executed
+     * before actually launching a query. This is useful to constrain the set
+     * of allowed queries, in order to build more specialized query builders.
+     * The query will only be executed when all the rules
+     * have been evaluated as true (all the functions return true). 
+     *
+     * Parameters:
+     * rule {function} A function to be executed. The function is expected to
+     * have a boolean return value.
+     */
+    var addExecutionRule = function(rule) {
+    	executionRules.push(rule);
+    }
+    
     /**
      * Method: createNewQuery
      * Create a new query and adds it to the queries
@@ -254,7 +283,13 @@ App.queryMgr = function(options) {
      * Executes the query, ie. writes the MDX and sends a XHR request
      */
     var executeQuery = function() {
-        _events.triggerEvent('beforequeryregistered');
+    	var ruleProcessor = new App.ExecutionRuleProcessor({executionRules: executionRules});
+    	ruleProcessor.on("rulesaccepted", doExecuteQuery, this);
+    	ruleProcessor.checkRules();
+    };
+
+    var doExecuteQuery = function() {
+    	_events.triggerEvent('beforequeryregistered');
         Ext.Ajax.request({
             url: './registerquery',
             success: function(response) {
@@ -267,7 +302,7 @@ App.queryMgr = function(options) {
                         success: function(response) {
                             App.metadata = Ext.util.JSON.decode(response.responseText);
                             _events.triggerEvent('metadataloaded');
-                            loadData();
+                        	loadData();
                         },
                         failure: function(response) {
                             App.errorMgr.show(response, 'getting info about query results');
@@ -289,7 +324,7 @@ App.queryMgr = function(options) {
             timeout: 120000
         });
     };
-
+    
     /**
      * Method: loadData
      * Calls the getdata service
@@ -461,6 +496,7 @@ App.queryMgr = function(options) {
 
     return {
         init: function() {
+        	addExecutionRule(new App.LimitQuerySizeRule());
             createNewQuery();
         },
         events: _events,
@@ -477,6 +513,7 @@ App.queryMgr = function(options) {
         executeQuery: executeQuery,
         getDimensions: getDimensions,
         drillDown: drillDown,
-        rollUp: rollUp
+        rollUp: rollUp,
+        addExecutionRule: addExecutionRule
     };
 }();
