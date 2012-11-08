@@ -215,6 +215,9 @@ task(combineExtJs, dependsOn:copyJsResources) << {
   def extjs = new File(webAppDir, 'lib/externals/ext/ext-all-debug.js')
 
   combinedExt.parentFile.mkdirs()
+  if (combinedExt.exists()) {
+      combinedExt.delete()
+  }
   combinedExt.withWriter (encoding){writer ->
     write(writer,extjsBase,encoding)
     write(writer,extjs,encoding)
@@ -227,6 +230,9 @@ task(combineOpenLayersJs, dependsOn:copyJsResources) << {
   def openLayersFiles = lookupJsFiles(new File(webAppDir, 'lib/externals/openlayers/lib/OpenLayers.js'), encoding)
 
   combinedOL.parentFile.mkdirs()
+  if (combinedOL.exists()) {
+      combinedOL.delete()
+  }
   combinedOL.withWriter (encoding){writer ->
     write(writer,openLayersSingleFile,encoding)
     openLayersFiles.each {write(writer,it,encoding)}
@@ -238,6 +244,9 @@ task(combineGeoExtJs, dependsOn:copyJsResources) << {
     def geoextFiles = lookupJsFiles(new File(webAppDir, 'lib/externals/geoext/lib/GeoExt.js'), encoding)
 
     combinedGeoExt.parentFile.mkdirs()
+    if (combinedGeoExt.exists()) {
+      combinedGeoExt.delete()
+    }
     combinedGeoExt.withWriter (encoding){writer ->
       write(writer,geoextSingleFile,encoding)
       geoextFiles.each {write(writer,it,encoding)}
@@ -255,6 +264,7 @@ task(combineAppJs, dependsOn:copyJsResources) << {
       'app/lib/App/DimensionSelector.js',
       'app/lib/App/MemberSelector.js',
       'app/lib/App/MDX.js',
+      'app/lib/App/ExecutionRule.js',
       'app/lib/App/queryMgr.js',
       'app/lib/App/main.js',
       'app/lib/App/queryBuilder.js',
@@ -275,6 +285,9 @@ task(combineAppJs, dependsOn:copyJsResources) << {
     inputFiles = inputFiles.collect {f -> new File(webAppDir, f)}
 
     combinedApp.parentFile.mkdirs()
+    if (combinedApp.exists()) {
+      combinedApp.delete()
+    }
     combinedApp.withWriter (encoding){writer ->
       inputFiles.each {write(writer,it,encoding)}
     }
@@ -301,9 +314,21 @@ task(appMinify,type:JavaExec, dependsOn:combineAppJs) {
     args = [combinedApp.path, '--type','js','--charset','utf-8','-o',minifiedApp.path]
 }
 task(copyNonMinifiedJS,dependsOn:[combineExtJs,combineOpenLayersJs,combineGeoExtJs,combineAppJs]) << {
+   if (minifiedExt.exists()) {
+      minifiedExt.delete()
+   }
    minifiedExt << combinedExt.asWritable()
+   if (minifiedOL.exists()) {
+      minifiedOL.delete()
+   }
    minifiedOL << combinedOL.asWritable()
+   if (minifiedGeoExt.exists()) {
+      minifiedGeoExt.delete()
+   }
    minifiedGeoExt << combinedGeoExt.asWritable()
+   if (minifiedApp.exists()) {
+      minifiedApp.delete()
+   }
    minifiedApp << combinedApp.asWritable()
 }
 
