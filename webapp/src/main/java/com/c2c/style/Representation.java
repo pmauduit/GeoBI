@@ -21,7 +21,6 @@ public class Representation implements Comparable<Representation> {
     }
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public int compareTo(Representation r) {
 		return this.range.getMinValue().compareTo(r.range.getMinValue());
 	}

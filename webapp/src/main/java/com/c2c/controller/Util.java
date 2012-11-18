@@ -48,13 +48,13 @@ public final class Util {
     public static Style createDefaultStyle() {
 
         StyleBuilder styleBuilder = new StyleBuilder();
-        Symbolizer symb = styleBuilder.createLineSymbolizer(Color.BLACK, 2);
+        Symbolizer symb = styleBuilder.createLineSymbolizer(Color.BLACK, 1);
 
         return styleBuilder.createStyle(symb);
     }
 
     public static Stroke defaultStroke() {
-        return new StyleBuilder().createStroke(Color.BLACK, 2.0);
+        return new StyleBuilder().createStroke(Color.BLACK, 1.0);
     }
     
     public static int getDpiFromFormat(String formatOptions) {

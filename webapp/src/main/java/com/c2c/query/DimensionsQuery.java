@@ -76,8 +76,14 @@ public class DimensionsQuery extends AbstractQuery<ArrayList<String[]> > {
     					Level cLvl = k.next();
     					nbLvls++;
     					
-    					List<Member> lMbrs;
+    					List<Member> lMbrs = null;
+    					try {
     					lMbrs = cLvl.getMembers();
+    					}
+    					catch (Exception ex) {
+    						ex.printStackTrace();
+    						System.out.println(cLvl.getName());
+    					}
     					// iterating on members
     					for (java.util.Iterator<Member> l = lMbrs.iterator() ; l.hasNext() ; )
     					{

@@ -34,7 +34,11 @@ window.onload = function() {
                     contentEl: 'logo'
                 },
                 App.queryBuilder.panel,
-                App.report.panel
+                App.report.panel,
+                {
+                    xtype: 'component',
+                    contentEl: 'query-footer-logo'
+                }
             ]
         }, 
             content

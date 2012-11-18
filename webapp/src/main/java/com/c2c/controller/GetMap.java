@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -97,8 +98,13 @@ public class GetMap extends AbstractQueryingController {
 
         try {
             GTRenderer renderer = new StreamingRenderer();
+            Map java2Dhints = new HashMap();
+            java2Dhints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            renderer.setJava2DHints(new RenderingHints(java2Dhints));
+            
             Map hints = new HashMap();
             hints.put(StreamingRenderer.DPI_KEY, dpi);
+            hints.put(StreamingRenderer.LINE_WIDTH_OPTIMIZATION_KEY, true);
             renderer.setRendererHints(hints);
             
             renderer.setContext(map);

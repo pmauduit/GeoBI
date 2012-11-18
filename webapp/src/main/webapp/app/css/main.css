@@ -9,6 +9,12 @@ html body {
     margin-top: 10px;
 }
 
+#query-footer-logo {
+    text-align: center;
+    margin-top: 10px;
+    padding: 5px;
+}
+
 .x-combo-list-group {
     font-weight: bold;
 }

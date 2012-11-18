@@ -206,7 +206,7 @@ App.map = function() {
      * Optionaly adds the drill down control
      */
     var addDrillDownControl = function() {
-        if (navigables[currentNavigable][0]) {
+        if (navigables[currentNavigable] && navigables[currentNavigable][0]) {
 
             // FIXME we should put this in a separate file, and add a updateConfig
             // method
@@ -291,14 +291,25 @@ App.map = function() {
         region: 'center',
         border: false,
         map: {
+            maxExtent: new OpenLayers.Bounds(943657.8520000001,941523.6410000001,7601956.61,6824985.259000001),
+        	//maxExtent: new OpenLayers.Bounds(-31.256761, 27.638029, 44.818830, 71.185417),
+            projection: 'EPSG:3035',
+            units: 'm',
             maxResolution: 'auto',
             controls: [new OpenLayers.Control.Navigation()]
         },
         layers: [
             new OpenLayers.Layer.WMS(
-              "OpenLayers WMS",
-              "http://vmap0.tiles.osgeo.org/wms/vmap0", {layers: 'basic'}
-              )
+                'countries',
+                './getbaselayer',
+                {
+                    format: 'image/png'
+                },
+                {
+                    isBaseLayer: true,
+                    singleTile: true
+                }
+            )
         ]
     });
 

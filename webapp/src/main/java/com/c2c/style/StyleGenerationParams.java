@@ -100,7 +100,7 @@ public class StyleGenerationParams {
     		style.featureTypeStyles().add(choropleths);
     	} else {
     		StyleBuilder styleBuilder = new StyleBuilder();
-            Symbolizer symb = styleBuilder.createLineSymbolizer(Color.BLACK, 2);
+            Symbolizer symb = styleBuilder.createLineSymbolizer(Color.BLACK, 1);
             style.featureTypeStyles().add(styleBuilder.createFeatureTypeStyle(symb));
     	}
     	
@@ -468,12 +468,10 @@ public class StyleGenerationParams {
                     }
                 };
 
-                @Override
                 public CalcResult getResult() {
                     return calc;
                 }
 
-                @Override
                 public void visit(Feature feature) {
                     // do some calculation here
                 }

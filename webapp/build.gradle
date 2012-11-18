@@ -6,12 +6,14 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'jetty'
 apply plugin: 'eclipse'
+apply plugin: 'eclipse'
 apply plugin: Geotools
 apply plugin: Camptocamp
 apply plugin: Spring
 apply plugin: 'project-report'
 
 extraLibs = "$projectDir/libs"
+//System.properties['jsdebug'] = "true"
 
 
 def downloadDeps() {
@@ -22,16 +24,17 @@ def downloadDeps() {
     }
     println "Download dependencies:"
 
-    def baseURL = 'http://download.qualitystreetmap.org/osm/osmbi/libs/'
+    def baseURL = 'http://pegasosdi.uab.es/geobi-repo/'
 
     def dependencies = ['commons-beanutils.jar', 'commons-math.jar',
     'eigenbase-xom.jar',  'jts-1.10.jar', 'postgresql-8.4-701.jdbc3.jar',
     'commons-collections-3.2.1.jar', 'commons-pool.jar', 'ezmorph-1.0.4.jar',
-    'log4j.jar', 'servlet-api.jar', 'commons-dbcp.jar', 'commons-vfs.jar',
+    'log4j-1.2.16.jar', 'servlet-api.jar', 'commons-dbcp.jar', 'commons-vfs.jar',
     'geomondrian.jar', 'mapfish-geo-lib-1.2-SNAPSHOT.jar', 'spatialytics.jar',
     'commons-lang-2.4.jar', 'json-20080701.jar', 'eigenbase-properties.jar',
     'jfreechart-1.0.13.jar', 'jcommon-1.0.16.jar', 'javacup.jar', 'olap4j.jar',
-    'commons-logging-1.1.1.jar', 'eigenbase-resgen.jar', 'postgis-1.4.0.jar' ]
+    'commons-logging-1.1.1.jar', 'eigenbase-resgen.jar', 'postgis-1.4.0.jar',
+    'slf4j-api-1.4.3.jar' ]
 
     new File(extraLibs).mkdirs()
 
@@ -92,6 +95,26 @@ tasks.addRule("Pattern: build<server>") { String taskName ->
   }
 }
 
+def deploydir = "D:/workspaces/webbi/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/"
+// deploydir = "C:/Archivos de programa/Apache Software Foundation/Tomcat 6.0/webapps/"
+
+task(deploy, dependsOn: war) << {
+  ant.copy(file: war.archivePath, todir: deploydir)
+}
+
+tasks.addRule("Pattern: deploy<server>") { String taskName ->
+  if (taskName.startsWith("deploy")) {
+    System.properties['server'] = taskName.substring(6).toLowerCase();
+    war.destinationDir = new File(war.destinationDir, File.separator + System.properties['server'])
+
+    task(taskName, dependsOn: deploy) << {
+      println "Completed deploying war file for " + System.properties['server'] + " server"
+      println "War file generated on: " + war.archivePath
+      println "War file deployed to directory: " + deploydir
+    }
+  }
+}
+
 
 configurations{jsMinify}
 dependencies{jsMinify 'com.yahoo.platform.yui:yuicompressor:2.3.6'}
@@ -113,7 +136,7 @@ task (svnExportExternals) << {
       executable = 'svn'
         args = ['export',
              'http://svn.geoext.org/ext/3.2.1@2626',
-             'webapp/src/main/webapp/lib/externals/ext']
+             'src/main/webapp/lib/externals/ext']
     }
   }
 
@@ -122,7 +145,7 @@ task (svnExportExternals) << {
       executable = 'svn'
         args = ['export',
              'http://svn.geoext.org/core/trunk/geoext@2428',
-             'webapp/src/main/webapp/lib/externals/geoext']
+             'src/main/webapp/lib/externals/geoext']
     }
   }
 
@@ -132,7 +155,7 @@ task (svnExportExternals) << {
       executable = 'svn'
         args = ['export',
              'http://svn.openlayers.org/addins/loadingPanel/trunk@10808',
-             'webapp/src/main/webapp/lib/externals/loadingpanel']
+             'src/main/webapp/lib/externals/loadingpanel']
     }
   }
 
@@ -141,7 +164,7 @@ task (svnExportExternals) << {
       executable = 'svn'
         args = ['export',
              'http://svn.openlayers.org/trunk/openlayers@10808',
-             'webapp/src/main/webapp/lib/externals/openlayers']
+             'src/main/webapp/lib/externals/openlayers']
     }
   }
 }
@@ -167,6 +190,17 @@ def lookupJsFiles(file, encoding) {
   return files
 }
 
+def lookupJsFilesOL211(file, encoding) {
+  String text = file.getText(encoding)
+  def pattern = ~/jsFiles = \[((\s*"[^"),]*?",?\s*)+)\]/
+  def matcher = pattern.matcher(text)
+  matcher.find()
+  def filesNames = matcher.group(1).trim().split(",").collect{it.trim()}.collect{f -> f.substring(1,f.length() - 1)}
+  def files = [file]
+  files.addAll(filesNames.collect{new File(file.parentFile, it)})
+  return files
+}
+
 def write(writer, file ,encoding) {
   logger.debug("Writing "+file)
   writer.write("\n/* ***** Start of ${file.name} **** */\n")
@@ -181,6 +215,9 @@ task(combineExtJs, dependsOn:copyJsResources) << {
   def extjs = new File(webAppDir, 'lib/externals/ext/ext-all-debug.js')
 
   combinedExt.parentFile.mkdirs()
+  if (combinedExt.exists()) {
+      combinedExt.delete()
+  }
   combinedExt.withWriter (encoding){writer ->
     write(writer,extjsBase,encoding)
     write(writer,extjs,encoding)
@@ -193,6 +230,9 @@ task(combineOpenLayersJs, dependsOn:copyJsResources) << {
   def openLayersFiles = lookupJsFiles(new File(webAppDir, 'lib/externals/openlayers/lib/OpenLayers.js'), encoding)
 
   combinedOL.parentFile.mkdirs()
+  if (combinedOL.exists()) {
+      combinedOL.delete()
+  }
   combinedOL.withWriter (encoding){writer ->
     write(writer,openLayersSingleFile,encoding)
     openLayersFiles.each {write(writer,it,encoding)}
@@ -204,6 +244,9 @@ task(combineGeoExtJs, dependsOn:copyJsResources) << {
     def geoextFiles = lookupJsFiles(new File(webAppDir, 'lib/externals/geoext/lib/GeoExt.js'), encoding)
 
     combinedGeoExt.parentFile.mkdirs()
+    if (combinedGeoExt.exists()) {
+      combinedGeoExt.delete()
+    }
     combinedGeoExt.withWriter (encoding){writer ->
       write(writer,geoextSingleFile,encoding)
       geoextFiles.each {write(writer,it,encoding)}
@@ -221,6 +264,7 @@ task(combineAppJs, dependsOn:copyJsResources) << {
       'app/lib/App/DimensionSelector.js',
       'app/lib/App/MemberSelector.js',
       'app/lib/App/MDX.js',
+      'app/lib/App/ExecutionRule.js',
       'app/lib/App/queryMgr.js',
       'app/lib/App/main.js',
       'app/lib/App/queryBuilder.js',
@@ -241,6 +285,9 @@ task(combineAppJs, dependsOn:copyJsResources) << {
     inputFiles = inputFiles.collect {f -> new File(webAppDir, f)}
 
     combinedApp.parentFile.mkdirs()
+    if (combinedApp.exists()) {
+      combinedApp.delete()
+    }
     combinedApp.withWriter (encoding){writer ->
       inputFiles.each {write(writer,it,encoding)}
     }
@@ -267,9 +314,21 @@ task(appMinify,type:JavaExec, dependsOn:combineAppJs) {
     args = [combinedApp.path, '--type','js','--charset','utf-8','-o',minifiedApp.path]
 }
 task(copyNonMinifiedJS,dependsOn:[combineExtJs,combineOpenLayersJs,combineGeoExtJs,combineAppJs]) << {
+   if (minifiedExt.exists()) {
+      minifiedExt.delete()
+   }
    minifiedExt << combinedExt.asWritable()
+   if (minifiedOL.exists()) {
+      minifiedOL.delete()
+   }
    minifiedOL << combinedOL.asWritable()
+   if (minifiedGeoExt.exists()) {
+      minifiedGeoExt.delete()
+   }
    minifiedGeoExt << combinedGeoExt.asWritable()
+   if (minifiedApp.exists()) {
+      minifiedApp.delete()
+   }
    minifiedApp << combinedApp.asWritable()
 }
 
