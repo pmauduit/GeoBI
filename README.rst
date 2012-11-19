@@ -1,14 +1,12 @@
 Introduction
 ============
 
-This is a fork of Camptocamp's GeoBI webapp, which aims to keep improving the application.
- It is actually based on the branch created by Pierre MAudit, created for solving some issues
+This is a fork of Camptocamp's GeoBI webapp, which aims to solve some issues
 with the provided build system (based on Gradle).
 
-Pierre put some fixes with the default maven repositories, and added a geofoodmart
+I put some fixes with the default maven repositories, and added a geofoodmart
 profile, in order to easily test or deploy the webapp using the well-known
 geofoodmart sample.
-
 
 Installation
 =============
@@ -38,15 +36,5 @@ That should do the trick.
 Have fun,
 
 - Pierre
-
-Additional documentation
-========================
-
-You can find additional documentation for the project on the project Wiki:
-https://github.com/dispiste/GeoBI/wiki
-
-Regards,
-
-Cesar
 
 
