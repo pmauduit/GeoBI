@@ -16,6 +16,10 @@ extraLibs = "$projectDir/libs"
 //System.properties['jsdebug'] = "true"
 
 
+repositories {
+   mavenCentral()
+ }
+   
 def downloadDeps() {
     def skip = System.properties['skipDownloadDeps']
     if(skip != null && 'false' != skip.trim().toLowerCase()) {
